@@ -1,5 +1,7 @@
 package com.omega;
 
+import com.omega.view.Menu;
+
 /**
  * Class ApplicationStarter
  *
@@ -8,5 +10,8 @@ package com.omega;
  */
 public class ApplicationStarter {
 
-
+    public static void main(String[] args) {
+        Menu menu = new Menu();
+        menu.menu01();
+    }
 }
