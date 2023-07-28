@@ -1,5 +1,6 @@
 package com.omega.view;
 
+import com.omega.service.EmployeeService;
 import com.omega.utils.Utility;
 
 /**
@@ -12,6 +13,7 @@ public class Menu {
 
     private boolean loop01 = true;
     private boolean loop02 = true;
+    private final EmployeeService employeeService = new EmployeeService();
 
 
     /**
@@ -28,18 +30,7 @@ public class Menu {
             String choice = Utility.readString(1);
             switch (choice) {
                 case "1":
-                    System.out.println("================== 登录系统 ==================");
-                    System.out.println("请输入员工号: ");
-                    String empId = Utility.readString(32);
-                    System.out.println("请输入密  码: ");
-                    String password = Utility.readString(32);
-
-                    // Todo: 使用db验证员工号和密码
-                    if ("123".equals(password)) {
-                        menu02();
-                    } else {
-                        System.out.println("================== 登录失败 ==================");
-                    }
+                    login();
                     break;
 
                 case "2":
@@ -103,6 +94,26 @@ public class Menu {
                 default:
                     System.out.println("输入有误, 请重新输入.");
             }
+        }
+    }
+
+
+    /**
+     * Login module
+     */
+    public void login() {
+        System.out.println("================== 登录系统 ==================");
+        System.out.println("请输入员工号: ");
+        String empId = Utility.readString(32);
+        System.out.println("请输入密  码: ");
+        String password = Utility.readString(32);
+
+        // 使用db验证员工号和密码
+        if (!employeeService.validateEmployeeInfo(empId, password)) {
+            System.out.println("[" + empId + " 登录失败] ");
+        } else {
+            System.out.println("[" + empId + " 登录成功]");
+            menu02();
         }
     }
 }
