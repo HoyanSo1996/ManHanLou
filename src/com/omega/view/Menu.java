@@ -3,6 +3,7 @@ package com.omega.view;
 import com.omega.domain.DiningTable;
 import com.omega.service.DiningTableService;
 import com.omega.service.EmployeeService;
+import com.omega.utils.CommonUtil;
 import com.omega.utils.Utility;
 
 import java.util.List;
@@ -71,7 +72,7 @@ public class Menu {
                     break;
 
                 case "2":
-                    System.out.println("预 定 餐 桌");
+                    orderDiningTable();
                     break;
 
                 case "3":
@@ -127,10 +128,52 @@ public class Menu {
      */
     public void showDiningTableState() {
         List<DiningTable> diningTableList = diningTableService.getDiningTableList();
-        System.out.println("\n餐桌编号\t\t餐桌转态");
+        System.out.println("==================== 餐桌列表 ====================");
+        System.out.println("\n餐桌编号\t\t餐桌状态");
         for (DiningTable diningTable : diningTableList) {
             System.out.println(diningTable);
         }
         System.out.println("==================== 显示完毕 ====================");
+    }
+
+
+    /**
+     * Order diningTable module
+     */
+    public void orderDiningTable() {
+        System.out.println("==================== 预定餐桌 ====================");
+
+        // 1.判断是否取消预定
+        System.out.println("请选择要预定的餐桌编号(-1退出): ");
+        int id = Utility.readInt();
+        if (id == -1) {
+            System.out.println("==================== 退出预定 ====================");
+            return;
+        }
+
+        // 2.判断餐桌是否是空置的
+        DiningTable diningTable = diningTableService.getDiningTableById(id);
+        if (diningTable.getState().equals(CommonUtil.TABLE_STATE.IN_USE.getVal())) {
+            System.out.println("==================== 餐桌已被预定或使用 ====================");
+            return;
+        }
+
+        // 3.确认预定
+        System.out.println("确认是否预定(Y/N)");
+        char c = Utility.readConfirmSelection();
+        if (c == 'N') {
+            System.out.println("==================== 取消预定 ====================");
+            return;
+        }
+        System.out.println("预订人名字:");
+        String orderName = Utility.readString(32);
+        System.out.println("预订人电话:");
+        String orderTel = Utility.readString(11);
+        boolean orderResult = diningTableService.updateDiningTableById(id, orderName, orderTel);
+        if (orderResult) {
+            System.out.println("==================== 预定成功 ====================");
+        } else {
+            System.out.println("==================== 预定失败 ====================");
+        }
     }
 }

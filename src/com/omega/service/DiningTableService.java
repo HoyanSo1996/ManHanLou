@@ -19,6 +19,27 @@ public class DiningTableService {
      */
     public List<DiningTable> getDiningTableList() {
         // Tips: 可变参数的实参可以不填
-        return diningTableDAO.queryMany("select * from diningTable", DiningTable.class);
+        return diningTableDAO.queryMany(
+                "select * from diningTable",
+                DiningTable.class);
+    }
+
+
+    /**
+     * get diningTable by id
+     */
+    public DiningTable getDiningTableById(int id) {
+        return diningTableDAO.querySingle(
+                "select * from diningTable where id = ?",
+                DiningTable.class,
+                id);
+    }
+
+
+    public boolean updateDiningTableById(Integer id, String orderName, String orderTel) {
+        int affectedRow = diningTableDAO.update(
+                "update diningTable set state = '1', orderName = ?, orderTel = ? where id = ?",
+                orderName, orderTel, id);
+        return affectedRow > 0;
     }
 }
