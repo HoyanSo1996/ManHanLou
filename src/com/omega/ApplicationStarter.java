@@ -1,6 +1,6 @@
 package com.omega;
 
-import com.omega.view.Menu;
+import com.omega.view.MHLMenu;
 
 /**
  * Class ApplicationStarter
@@ -11,7 +11,7 @@ import com.omega.view.Menu;
 public class ApplicationStarter {
 
     public static void main(String[] args) {
-        Menu menu = new Menu();
-        menu.menu01();
+        MHLMenu mhlMenu = new MHLMenu();
+        mhlMenu.menu01();
     }
 }

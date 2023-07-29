@@ -1,8 +1,10 @@
 package com.omega.view;
 
 import com.omega.domain.DiningTable;
+import com.omega.domain.Menu;
 import com.omega.service.DiningTableService;
 import com.omega.service.EmployeeService;
+import com.omega.service.MenuService;
 import com.omega.utils.CommonUtil;
 import com.omega.utils.Utility;
 
@@ -14,10 +16,11 @@ import java.util.List;
  * @author KennySu
  * @date 2023/7/28
  */
-public class Menu {
+public class MHLMenu {
 
     private final EmployeeService employeeService = new EmployeeService();
     private final DiningTableService diningTableService = new DiningTableService();
+    private final MenuService menuService = new MenuService();
 
 
     /**
@@ -68,7 +71,7 @@ public class Menu {
             String choice = Utility.readString(1);
             switch (choice) {
                 case "1":
-                    showDiningTableState();
+                    showDiningTableList();
                     break;
 
                 case "2":
@@ -76,7 +79,7 @@ public class Menu {
                     break;
 
                 case "3":
-                    System.out.println("显示所有菜品");
+                    showMenuList();
                     break;
 
                 case "4":
@@ -124,9 +127,9 @@ public class Menu {
 
 
     /**
-     * Showing table's state module
+     * Show the state of diningTable module
      */
-    public void showDiningTableState() {
+    public void showDiningTableList() {
         List<DiningTable> diningTableList = diningTableService.getDiningTableList();
         System.out.println("==================== 餐桌列表 ====================");
         System.out.println("\n餐桌编号\t\t餐桌状态");
@@ -175,5 +178,18 @@ public class Menu {
         } else {
             System.out.println("==================== 预定失败 ====================");
         }
+    }
+
+
+    /**
+     * show the list of menu module
+     */
+    public void showMenuList() {
+        List<Menu> menuList = menuService.getMenuList();
+        System.out.println("\n菜品标号\t\t菜品名\t\t类别\t\t\t价格");
+        for (Menu menu : menuList) {
+            System.out.println(menu);
+        }
+        System.out.println("==================== 显示完毕 ====================");
     }
 }
