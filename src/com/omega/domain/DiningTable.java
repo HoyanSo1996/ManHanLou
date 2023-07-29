@@ -1,6 +1,8 @@
 package com.omega.domain;
 
+import com.omega.utils.CommonUtil.TABLE_STATE;
 import lombok.Data;
+
 
 /**
  * @author KennySo
@@ -17,6 +19,6 @@ public class DiningTable {
 
     @Override
     public String toString() {
-        return "   " + id + "\t\t " + (state == 0 ? " 空 " : "使用中");
+        return "   " + id + "\t\t " + (state == 0 ? TABLE_STATE.EMPTY.getCd() : TABLE_STATE.IN_USE.getCd());
     }
 }
