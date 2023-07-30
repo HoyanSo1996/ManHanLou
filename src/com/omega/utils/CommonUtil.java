@@ -23,4 +23,18 @@ public class CommonUtil {
             this.val = val;
         }
     }
+
+
+    @Getter
+    public enum BILL_STATE {
+        UNPAID("未支付"),
+        PAID("已支付"),
+        BAD_DEBT("坏账");
+
+        private String val;
+
+        BILL_STATE(String val) {
+            this.val = val;
+        }
+    }
 }

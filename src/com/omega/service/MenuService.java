@@ -19,4 +19,12 @@ public class MenuService {
                 "select * from menu",
                 Menu.class);
     }
+
+
+    public Menu getMenuById(Integer menuId) {
+        return menuDAO.querySingle(
+                "select * from menu where id = ?",
+                Menu.class,
+                menuId);
+    }
 }

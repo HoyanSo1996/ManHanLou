@@ -36,6 +36,9 @@ public class DiningTableService {
     }
 
 
+    /**
+     * update the state of diningTable
+     */
     public boolean updateDiningTableById(Integer id, String orderName, String orderTel) {
         int affectedRow = diningTableDAO.update(
                 "update diningTable set state = '1', orderName = ?, orderTel = ? where id = ?",

@@ -2,6 +2,7 @@ package com.omega.view;
 
 import com.omega.domain.DiningTable;
 import com.omega.domain.Menu;
+import com.omega.service.BillService;
 import com.omega.service.DiningTableService;
 import com.omega.service.EmployeeService;
 import com.omega.service.MenuService;
@@ -21,6 +22,7 @@ public class MHLMenu {
     private final EmployeeService employeeService = new EmployeeService();
     private final DiningTableService diningTableService = new DiningTableService();
     private final MenuService menuService = new MenuService();
+    private final BillService billService = new BillService();
 
 
     /**
@@ -37,7 +39,7 @@ public class MHLMenu {
             String choice = Utility.readString(1);
             switch (choice) {
                 case "1":
-                    if(login()) {
+                    if (login()) {
                         menu02();
                     }
                     break;
@@ -73,31 +75,24 @@ public class MHLMenu {
                 case "1":
                     showDiningTableList();
                     break;
-
                 case "2":
                     orderDiningTable();
                     break;
-
                 case "3":
                     showMenuList();
                     break;
-
                 case "4":
-                    System.out.println("点 餐 服 务");
+                    orderMenu();
                     break;
-
                 case "5":
                     System.out.println("查 看 账 单");
                     break;
-
                 case "6":
                     System.out.println("结      账");
                     break;
-
                 case "9":
                     System.out.println("退出二级菜单~~");
                     return;
-
                 default:
                     System.out.println("输入有误, 请重新输入.");
             }
@@ -110,9 +105,9 @@ public class MHLMenu {
      */
     public boolean login() {
         System.out.println("================== 登录系统 ==================");
-        System.out.println("请输入员工号: ");
+        System.out.print("请输入 员工号: ");
         String empId = Utility.readString(32);
-        System.out.println("请输入密  码: ");
+        System.out.print("请输入 密  码: ");
         String password = Utility.readString(32);
 
         // 使用db验证员工号和密码
@@ -162,15 +157,15 @@ public class MHLMenu {
         }
 
         // 3.确认预定
-        System.out.println("确认是否预定(Y/N)");
+        System.out.println("确认是否预定(Y/N): ");
         char c = Utility.readConfirmSelection();
         if (c == 'N') {
             System.out.println("==================== 取消预定 ====================");
             return;
         }
-        System.out.println("预订人名字:");
+        System.out.print("预订人名字: ");
         String orderName = Utility.readString(32);
-        System.out.println("预订人电话:");
+        System.out.print("预订人电话: ");
         String orderTel = Utility.readString(11);
         boolean orderResult = diningTableService.updateDiningTableById(id, orderName, orderTel);
         if (orderResult) {
@@ -191,5 +186,59 @@ public class MHLMenu {
             System.out.println(menu);
         }
         System.out.println("==================== 显示完毕 ====================");
+    }
+
+
+    /**
+     * order menu
+     */
+    public void orderMenu() {
+        System.out.println("==================== 点餐服务 ====================");
+
+        while (true) {
+            System.out.println("请选择点餐的桌号(-1退出): ");
+            int diningTableId = Utility.readInt();
+            if (diningTableId == -1) {
+                System.out.println("==================== 退出点餐 ====================");
+                return;
+            }
+            if (diningTableService.getDiningTableById(diningTableId) == null) {
+                System.out.println("餐桌不存在~");
+                continue;
+            }
+
+            System.out.println("请选择菜品的编号(-1退出): ");
+            int menuId = Utility.readInt();
+            if (menuId == -1) {
+                System.out.println("==================== 退出点餐 ====================");
+                return;
+            }
+            if (menuService.getMenuById(menuId) == null) {
+                System.out.println("菜品不存在~");
+                continue;
+            }
+
+
+            System.out.println("请选择菜品的数量(-1退出): ");
+            int nums = Utility.readInt();
+            if (nums == -1) {
+                System.out.println("==================== 退出点餐 ====================");
+                return;
+            }
+
+            System.out.println("确认是否点这个菜(Y/N): ");
+            char result = Utility.readConfirmSelection();
+            if (result == 'Y') {
+                boolean b = billService.orderMenu(diningTableId, menuId, nums);
+                if (b) {
+                    System.out.println("==================== 点餐成功 ====================");
+                } else {
+                    System.out.println("==================== 点餐失败 ====================");
+                }
+            } else {
+                System.out.println("==================== 退出点餐 ====================");
+            }
+            return;
+        }
     }
 }
