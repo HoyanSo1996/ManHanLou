@@ -19,4 +19,15 @@ public class Bill {
     private Double money;
     private Date billDate;
     private String state;
+
+    @Override
+    public String toString() {
+        return id + "\t\t" +
+                diningTableId + "\t\t" +
+                menuId + "\t\t\t" +
+                nums + "\t\t\t" +
+                money + "\t\t" +
+                billDate + "\t\t" +
+                state;
+    }
 }

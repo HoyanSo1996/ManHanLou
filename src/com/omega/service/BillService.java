@@ -3,8 +3,10 @@ package com.omega.service;
 import com.omega.dao.BillDAO;
 import com.omega.dao.DiningTableDAO;
 import com.omega.dao.MenuDAO;
+import com.omega.domain.Bill;
 import com.omega.domain.Menu;
 
+import java.util.List;
 import java.util.UUID;
 
 import static com.omega.utils.CommonUtil.BILL_STATE;
@@ -52,4 +54,10 @@ public class BillService {
         return insertResult > 0;
     }
 
+
+    public List<Bill> getBillList() {
+        return billDAO.queryMany(
+                "select * from bill",
+                Bill.class);
+    }
 }

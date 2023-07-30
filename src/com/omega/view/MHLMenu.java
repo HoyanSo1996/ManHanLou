@@ -1,5 +1,6 @@
 package com.omega.view;
 
+import com.omega.domain.Bill;
 import com.omega.domain.DiningTable;
 import com.omega.domain.Menu;
 import com.omega.service.BillService;
@@ -73,19 +74,19 @@ public class MHLMenu {
             String choice = Utility.readString(1);
             switch (choice) {
                 case "1":
-                    showDiningTableList();
+                    displayDiningTableList();
                     break;
                 case "2":
                     orderDiningTable();
                     break;
                 case "3":
-                    showMenuList();
+                    displayMenu();
                     break;
                 case "4":
                     orderMenu();
                     break;
                 case "5":
-                    System.out.println("查 看 账 单");
+                    displayBillList();
                     break;
                 case "6":
                     System.out.println("结      账");
@@ -124,7 +125,7 @@ public class MHLMenu {
     /**
      * Show the state of diningTable module
      */
-    public void showDiningTableList() {
+    public void displayDiningTableList() {
         List<DiningTable> diningTableList = diningTableService.getDiningTableList();
         System.out.println("==================== 餐桌列表 ====================");
         System.out.println("\n餐桌编号\t\t餐桌状态");
@@ -177,12 +178,12 @@ public class MHLMenu {
 
 
     /**
-     * show the list of menu module
+     * display menu module
      */
-    public void showMenuList() {
+    public void displayMenu() {
         List<Menu> menuList = menuService.getMenuList();
         System.out.println("==================== 菜品清单 ====================");
-        System.out.println("\n菜品标号\t\t菜品名\t\t类别\t\t\t价格");
+        System.out.println("菜品标号\t\t菜品名\t\t类别\t\t\t价格");
         for (Menu menu : menuList) {
             System.out.println(menu);
         }
@@ -241,5 +242,19 @@ public class MHLMenu {
             }
             return;
         }
+    }
+
+
+    /**
+     * display the bill
+     */
+    public void displayBillList() {
+        List<Bill> billList = billService.getBillList();
+        System.out.println("==================== 账单列表 ====================");
+        System.out.println("编号\t\t桌号\t\t菜品号\t\t菜品量\t\t金额\t\t\t日期\t\t\t\t\t\t\t状态");
+        for (Bill bill : billList) {
+            System.out.println(bill);
+        }
+        System.out.println("==================== 显示完毕 ====================");
     }
 }
