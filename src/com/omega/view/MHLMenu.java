@@ -35,7 +35,7 @@ public class MHLMenu {
             System.out.println("\t\t\t\t 1 登    录");
             System.out.println("\t\t\t\t 2 退    出");
 
-            System.out.println("请输入您的选择: ");
+            System.out.print("请输入您的选择: ");
             String choice = Utility.readString(1);
             switch (choice) {
                 case "1":
@@ -69,7 +69,7 @@ public class MHLMenu {
             System.out.println("\t\t\t\t 6 结      账");
             System.out.println("\t\t\t\t 9 返 回 上 级");
 
-            System.out.println("请输入您的选择: ");
+            System.out.print("请输入您的选择: ");
             String choice = Utility.readString(1);
             switch (choice) {
                 case "1":
@@ -142,7 +142,7 @@ public class MHLMenu {
         System.out.println("==================== 预定餐桌 ====================");
 
         // 1.判断是否取消预定
-        System.out.println("请选择要预定的餐桌编号(-1退出): ");
+        System.out.print("请选择要预定的餐桌编号(-1退出): ");
         int id = Utility.readInt();
         if (id == -1) {
             System.out.println("==================== 退出预定 ====================");
@@ -157,7 +157,7 @@ public class MHLMenu {
         }
 
         // 3.确认预定
-        System.out.println("确认是否预定(Y/N): ");
+        System.out.print("确认是否预定(Y/N): ");
         char c = Utility.readConfirmSelection();
         if (c == 'N') {
             System.out.println("==================== 取消预定 ====================");
@@ -181,6 +181,7 @@ public class MHLMenu {
      */
     public void showMenuList() {
         List<Menu> menuList = menuService.getMenuList();
+        System.out.println("==================== 菜品清单 ====================");
         System.out.println("\n菜品标号\t\t菜品名\t\t类别\t\t\t价格");
         for (Menu menu : menuList) {
             System.out.println(menu);
@@ -196,7 +197,7 @@ public class MHLMenu {
         System.out.println("==================== 点餐服务 ====================");
 
         while (true) {
-            System.out.println("请选择点餐的桌号(-1退出): ");
+            System.out.print("请选择点餐的桌号(-1退出): ");
             int diningTableId = Utility.readInt();
             if (diningTableId == -1) {
                 System.out.println("==================== 退出点餐 ====================");
@@ -207,7 +208,7 @@ public class MHLMenu {
                 continue;
             }
 
-            System.out.println("请选择菜品的编号(-1退出): ");
+            System.out.print("请选择菜品的编号(-1退出): ");
             int menuId = Utility.readInt();
             if (menuId == -1) {
                 System.out.println("==================== 退出点餐 ====================");
@@ -219,14 +220,14 @@ public class MHLMenu {
             }
 
 
-            System.out.println("请选择菜品的数量(-1退出): ");
+            System.out.print("请选择菜品的数量(-1退出): ");
             int nums = Utility.readInt();
             if (nums == -1) {
                 System.out.println("==================== 退出点餐 ====================");
                 return;
             }
 
-            System.out.println("确认是否点这个菜(Y/N): ");
+            System.out.print("确认是否点这个菜(Y/N): ");
             char result = Utility.readConfirmSelection();
             if (result == 'Y') {
                 boolean b = billService.orderMenu(diningTableId, menuId, nums);

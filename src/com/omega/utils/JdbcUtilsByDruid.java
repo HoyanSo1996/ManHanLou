@@ -19,23 +19,30 @@ import java.util.Properties;
 @SuppressWarnings("unused")
 public class JdbcUtilsByDruid {
 
+    private static final DataSource dataSource;
 
-    public static Connection getConnection() {
+    static {
         try {
             Properties properties = new Properties();
             properties.load(new FileInputStream("src\\druid-config.properties"));
-            DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
+            dataSource = DruidDataSourceFactory.createDataSource(properties);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Connection getConnection() {
+        try {
             return dataSource.getConnection();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
 
     /**
-     * @Note:
-     *      DBUtils-1.7 版本实现了 resultSet, statement, connection 全自动关闭, 所以不用调用下面的方法
+     * @Note: DBUtils-1.7 版本实现了 resultSet, statement, connection 全自动关闭, 所以不用调用下面的方法
      */
     public static void close(ResultSet resultSet, Statement statement, Connection connection) {
         // 由动态绑定可知, 此处调用的close()是连接池对象的close()
