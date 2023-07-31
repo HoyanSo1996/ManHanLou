@@ -280,7 +280,7 @@ public class MHLMenu {
 
             // check the diningTable for unpaid bill
             List<Bill> billList = billService.getBillListByDiningTableId(diningTableId);
-            if (billList.size() == 0) {
+            if (billList.isEmpty()) {
                 System.out.println("该餐桌不存在订单~");
                 continue;
             }

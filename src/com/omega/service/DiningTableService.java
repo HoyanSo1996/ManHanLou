@@ -2,11 +2,10 @@ package com.omega.service;
 
 import com.omega.dao.DiningTableDAO;
 import com.omega.domain.DiningTable;
-import com.omega.utils.CommonUtil;
 
 import java.util.List;
 
-import static com.omega.utils.CommonUtil.*;
+import static com.omega.utils.CommonUtil.TABLE_STATE;
 
 /**
  * @author KennySo
@@ -55,8 +54,8 @@ public class DiningTableService {
      */
     public boolean updateDiningTableStateToUsed(Integer diningTableId) {
         int affectedRows = diningTableDAO.update(
-                "update diningTable set state = ? where id = ? and state = ?",
-                TABLE_STATE.IN_USE.getVal(), diningTableId, TABLE_STATE.BOOKED.getVal());
+                "update diningTable set state = ? where id = ?",
+                TABLE_STATE.IN_USE.getVal(), diningTableId);
         return affectedRows > 0;
     }
 
