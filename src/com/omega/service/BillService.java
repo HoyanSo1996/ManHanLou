@@ -21,6 +21,7 @@ public class BillService {
     private final BillDAO billDAO = new BillDAO();
     private final MenuDAO menuDAO = new MenuDAO();
     private final DiningTableDAO diningTableDAO = new DiningTableDAO();
+    private final DiningTableService diningTableService = new DiningTableService();
 
 
     /**
@@ -59,5 +60,30 @@ public class BillService {
         return billDAO.queryMany(
                 "select * from bill",
                 Bill.class);
+    }
+
+
+    public List<Bill> getBillListByDiningTableId(int diningTableId) {
+        return billDAO.queryMany(
+                "select * from bill where diningTableId = ? and state = ?",
+                Bill.class,
+                diningTableId, BILL_STATE.UNPAID.getVal());
+    }
+
+
+    public boolean payTheBill(int diningTableId, String payMode) {
+        int billResult = billDAO.update(
+                "update bill set state = ? where diningTableId = ? and state = ?",
+                payMode, diningTableId, BILL_STATE.UNPAID.getVal());
+        if (billResult <= 0) {
+            return false;
+        }
+
+        // clear date of dining table.
+        if (!diningTableService.clearDiningTableById(diningTableId)) {
+            return false;
+        }
+
+        return true;
     }
 }

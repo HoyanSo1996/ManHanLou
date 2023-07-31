@@ -7,10 +7,12 @@ import com.omega.service.BillService;
 import com.omega.service.DiningTableService;
 import com.omega.service.EmployeeService;
 import com.omega.service.MenuService;
-import com.omega.utils.CommonUtil;
 import com.omega.utils.Utility;
 
 import java.util.List;
+
+import static com.omega.utils.CommonUtil.BILL_STATE;
+import static com.omega.utils.CommonUtil.TABLE_STATE;
 
 /**
  * Class Menu
@@ -67,7 +69,7 @@ public class MHLMenu {
             System.out.println("\t\t\t\t 3 显示所有菜品");
             System.out.println("\t\t\t\t 4 点 餐 服 务");
             System.out.println("\t\t\t\t 5 查 看 账 单");
-            System.out.println("\t\t\t\t 6 结      账");
+            System.out.println("\t\t\t\t 6 结 账 服 务");
             System.out.println("\t\t\t\t 9 返 回 上 级");
 
             System.out.print("请输入您的选择: ");
@@ -89,7 +91,7 @@ public class MHLMenu {
                     displayBillList();
                     break;
                 case "6":
-                    System.out.println("结      账");
+                    checkout();
                     break;
                 case "9":
                     System.out.println("退出二级菜单~~");
@@ -152,7 +154,7 @@ public class MHLMenu {
 
         // 2.判断餐桌是否是空置的
         DiningTable diningTable = diningTableService.getDiningTableById(id);
-        if (diningTable.getState().equals(CommonUtil.TABLE_STATE.IN_USE.getVal())) {
+        if (diningTable.getState().equals(TABLE_STATE.IN_USE.getVal())) {
             System.out.println("==================== 餐桌已被预定或使用 ====================");
             return;
         }
@@ -220,7 +222,6 @@ public class MHLMenu {
                 continue;
             }
 
-
             System.out.print("请选择菜品的数量(-1退出): ");
             int nums = Utility.readInt();
             if (nums == -1) {
@@ -256,5 +257,57 @@ public class MHLMenu {
             System.out.println(bill);
         }
         System.out.println("==================== 显示完毕 ====================");
+    }
+
+
+    /**
+     * checkout
+     */
+    public void checkout() {
+        System.out.println("==================== 结账服务 ====================");
+
+        while (true) {
+            System.out.print("请选择要结账的餐桌编号(-1退出): ");
+            int diningTableId = Utility.readInt();
+            if (diningTableId == -1) {
+                return;
+            }
+            if (diningTableService.getDiningTableById(diningTableId) == null) {
+                System.out.println("餐桌不存在~");
+                continue;
+            }
+
+            // check the diningTable for unpaid bill
+            List<Bill> billList = billService.getBillListByDiningTableId(diningTableId);
+            if (billList.size() == 0) {
+                System.out.println("该餐桌不存在订单~");
+                continue;
+            }
+            double amount = 0;
+            for (Bill bill : billList) {
+                amount += bill.getMoney();
+            }
+            System.out.println("应付金额: ￥" + amount);
+
+            System.out.print("结账的方式(现金/支付宝/微信): ");
+            String payMode = Utility.readString(10);
+            if (!(payMode.equals(BILL_STATE.CASH.getVal()) ||
+                    payMode.equals(BILL_STATE.ALI_PAY.getVal()) ||
+                    payMode.equals(BILL_STATE.WX_PAY.getVal()))) {
+                System.out.println("支付方式错误~");
+                continue;
+            }
+
+            System.out.print("确认是否结账(Y/N): ");
+            char c = Utility.readConfirmSelection();
+            if (c == 'Y') {
+                boolean result = billService.payTheBill(diningTableId, payMode);
+                System.out.println(result ? "结账成功~~" : "结账失败~~");
+                System.out.println("==================== 结账完成 ====================");
+            } else {
+                System.out.println("==================== 取消结账 ====================");
+            }
+            return;
+        }
     }
 }

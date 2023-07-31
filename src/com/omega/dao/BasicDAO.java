@@ -30,6 +30,7 @@ public class BasicDAO<T> {
         }
     }
 
+
     /**
      * 查询多行数据
      */
@@ -43,6 +44,7 @@ public class BasicDAO<T> {
         }
     }
 
+
     /**
      * 查询单行数据
      */
@@ -55,6 +57,7 @@ public class BasicDAO<T> {
             throw new RuntimeException(e);
         }
     }
+
 
     /**
      * 查询单行单列数据

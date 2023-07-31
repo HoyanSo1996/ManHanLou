@@ -15,8 +15,8 @@ public class CommonUtil {
         EMPTY(" 空 ", 0),
         IN_USE("使用中", 1);
 
-        private String cd;
-        private Integer val;
+        private final String cd;
+        private final Integer val;
 
         TABLE_STATE(String cd, Integer val) {
             this.cd = cd;
@@ -28,10 +28,12 @@ public class CommonUtil {
     @Getter
     public enum BILL_STATE {
         UNPAID("未支付"),
-        PAID("已支付"),
-        BAD_DEBT("坏账");
+        BAD_DEBT("坏账"),
+        CASH("现金"),
+        WX_PAY("微信"),
+        ALI_PAY("支付宝");
 
-        private String val;
+        private final String val;
 
         BILL_STATE(String val) {
             this.val = val;

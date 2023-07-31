@@ -2,8 +2,11 @@ package com.omega.service;
 
 import com.omega.dao.DiningTableDAO;
 import com.omega.domain.DiningTable;
+import com.omega.utils.CommonUtil;
 
 import java.util.List;
+
+import static com.omega.utils.CommonUtil.*;
 
 /**
  * @author KennySo
@@ -39,10 +42,21 @@ public class DiningTableService {
     /**
      * update the state of diningTable
      */
-    public boolean updateDiningTableById(Integer id, String orderName, String orderTel) {
+    public boolean updateDiningTableById(Integer diningTableId, String orderName, String orderTel) {
         int affectedRow = diningTableDAO.update(
                 "update diningTable set state = '1', orderName = ?, orderTel = ? where id = ?",
-                orderName, orderTel, id);
+                orderName, orderTel, diningTableId);
         return affectedRow > 0;
+    }
+
+
+    /**
+     * clear dining table
+     */
+    public boolean clearDiningTableById(int diningTableId) {
+        int affectRow = diningTableDAO.update(
+                "update diningTable set state = ?, orderName = '', orderTel = '' where id = ?",
+                TABLE_STATE.EMPTY.getVal(), diningTableId);
+        return affectRow > 0;
     }
 }

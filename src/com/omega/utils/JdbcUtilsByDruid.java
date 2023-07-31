@@ -31,6 +31,7 @@ public class JdbcUtilsByDruid {
         }
     }
 
+
     public static Connection getConnection() {
         try {
             return dataSource.getConnection();
