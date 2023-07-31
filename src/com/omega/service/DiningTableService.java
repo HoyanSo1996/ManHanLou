@@ -18,7 +18,7 @@ public class DiningTableService {
 
 
     /**
-     * get all dining table's state
+     * get dining table's state List
      */
     public List<DiningTable> getDiningTableList() {
         // Tips: 可变参数的实参可以不填
@@ -40,13 +40,24 @@ public class DiningTableService {
 
 
     /**
-     * update the state of diningTable
+     * 预定餐桌
      */
-    public boolean updateDiningTableById(Integer diningTableId, String orderName, String orderTel) {
-        int affectedRow = diningTableDAO.update(
-                "update diningTable set state = '1', orderName = ?, orderTel = ? where id = ?",
-                orderName, orderTel, diningTableId);
-        return affectedRow > 0;
+    public boolean updateDiningTableStateToBooked(Integer diningTableId, String orderName, String orderTel) {
+        int affectedRows = diningTableDAO.update(
+                "update diningTable set state = ?, orderName = ?, orderTel = ? where id = ?",
+                TABLE_STATE.BOOKED.getVal(), orderName, orderTel, diningTableId);
+        return affectedRows > 0;
+    }
+
+
+    /**
+     * 点餐时更新餐桌状态
+     */
+    public boolean updateDiningTableStateToUsed(Integer diningTableId) {
+        int affectedRows = diningTableDAO.update(
+                "update diningTable set state = ? where id = ? and state = ?",
+                TABLE_STATE.IN_USE.getVal(), diningTableId, TABLE_STATE.BOOKED.getVal());
+        return affectedRows > 0;
     }
 
 

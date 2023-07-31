@@ -12,14 +12,13 @@ public class CommonUtil {
 
     @Getter
     public enum TABLE_STATE {
-        EMPTY(" 空 ", 0),
-        IN_USE("使用中", 1);
+        EMPTY(" 空 "),
+        BOOKED("已预订"),
+        IN_USE("使用中");
 
-        private final String cd;
-        private final Integer val;
+        private final String val;
 
-        TABLE_STATE(String cd, Integer val) {
-            this.cd = cd;
+        TABLE_STATE(String val) {
             this.val = val;
         }
     }

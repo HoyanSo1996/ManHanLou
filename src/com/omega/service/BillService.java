@@ -1,7 +1,6 @@
 package com.omega.service;
 
 import com.omega.dao.BillDAO;
-import com.omega.dao.DiningTableDAO;
 import com.omega.dao.MenuDAO;
 import com.omega.domain.Bill;
 import com.omega.domain.Menu;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.omega.utils.CommonUtil.BILL_STATE;
-import static com.omega.utils.CommonUtil.TABLE_STATE;
 
 /**
  * @author KennySo
@@ -20,7 +18,6 @@ public class BillService {
 
     private final BillDAO billDAO = new BillDAO();
     private final MenuDAO menuDAO = new MenuDAO();
-    private final DiningTableDAO diningTableDAO = new DiningTableDAO();
     private final DiningTableService diningTableService = new DiningTableService();
 
 
@@ -47,12 +44,9 @@ public class BillService {
 
         // 更新下单餐桌状态
         if (insertResult > 0) {
-            int updateResult = diningTableDAO.update(
-                    "update diningTable set state = ? where id = ? and state = 0",
-                    TABLE_STATE.IN_USE.getVal(), diningTableId);
+            return diningTableService.updateDiningTableStateToUsed(diningTableId);
         }
-
-        return insertResult > 0;
+        return false;
     }
 
 

@@ -20,20 +20,20 @@ INSERT INTO employee VALUES
 
 # diningTable表
 CREATE TABLE diningTable(
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	state INT DEFAULT 0,   # 餐桌状态: 0为空,1为在用状态
-	orderName VARCHAR(32) NOT NULL DEFAULT '',   # 预定人的名字
-	orderTel VARCHAR(11) NOT NULL DEFAULT ''
+   id INT PRIMARY KEY AUTO_INCREMENT,
+   state VARCHAR(10) NOT NULL DEFAULT '',
+   orderName VARCHAR(32) NOT NULL DEFAULT '',
+   orderTel VARCHAR(11) NOT NULL DEFAULT ''
 );
 INSERT INTO diningTable VALUES
-	(NULL, '0', '', ''),
-	(NULL, '0', '', ''),
-	(NULL, '0', '', ''),
-	(NULL, '0', '', ''),
-	(NULL, '0', '', ''),
-	(NULL, '0', '', ''),
-	(NULL, '0', '', ''),
-	(NULL, '0', '', '');
+	(NULL, ' 空 ', '', ''),
+	(NULL, ' 空 ', '', ''),
+	(NULL, ' 空 ', '', ''),
+	(NULL, ' 空 ', '', ''),
+	(NULL, ' 空 ', '', ''),
+	(NULL, ' 空 ', '', ''),
+	(NULL, ' 空 ', '', ''),
+	(NULL, ' 空 ', '', '');
 	
 
 #菜谱

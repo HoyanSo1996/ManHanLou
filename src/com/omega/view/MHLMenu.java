@@ -154,7 +154,7 @@ public class MHLMenu {
 
         // 2.判断餐桌是否是空置的
         DiningTable diningTable = diningTableService.getDiningTableById(id);
-        if (diningTable.getState().equals(TABLE_STATE.IN_USE.getVal())) {
+        if (!diningTable.getState().equals(TABLE_STATE.EMPTY.getVal())) {
             System.out.println("==================== 餐桌已被预定或使用 ====================");
             return;
         }
@@ -170,8 +170,8 @@ public class MHLMenu {
         String orderName = Utility.readString(32);
         System.out.print("预订人电话: ");
         String orderTel = Utility.readString(11);
-        boolean orderResult = diningTableService.updateDiningTableById(id, orderName, orderTel);
-        if (orderResult) {
+
+        if (diningTableService.updateDiningTableStateToBooked(id, orderName, orderTel)) {
             System.out.println("==================== 预定成功 ====================");
         } else {
             System.out.println("==================== 预定失败 ====================");
@@ -231,16 +231,17 @@ public class MHLMenu {
 
             System.out.print("确认是否点这个菜(Y/N): ");
             char result = Utility.readConfirmSelection();
-            if (result == 'Y') {
-                boolean b = billService.orderMenu(diningTableId, menuId, nums);
-                if (b) {
-                    System.out.println("==================== 点餐成功 ====================");
-                } else {
-                    System.out.println("==================== 点餐失败 ====================");
-                }
-            } else {
-                System.out.println("==================== 退出点餐 ====================");
+            if (result == 'N') {
+                System.out.println("==================== 取消点餐 ====================");
+                return;
             }
+
+            if (billService.orderMenu(diningTableId, menuId, nums)) {
+                System.out.println("==================== 点餐成功 ====================");
+            } else {
+                System.out.println("==================== 点餐失败 ====================");
+            }
+            System.out.println("==================== 退出点餐 ====================");
             return;
         }
     }
@@ -283,6 +284,7 @@ public class MHLMenu {
                 System.out.println("该餐桌不存在订单~");
                 continue;
             }
+
             double amount = 0;
             for (Bill bill : billList) {
                 amount += bill.getMoney();
@@ -300,12 +302,15 @@ public class MHLMenu {
 
             System.out.print("确认是否结账(Y/N): ");
             char c = Utility.readConfirmSelection();
-            if (c == 'Y') {
-                boolean result = billService.payTheBill(diningTableId, payMode);
-                System.out.println(result ? "结账成功~~" : "结账失败~~");
+            if (c == 'N') {
+                System.out.println("==================== 取消结账 ====================");
+            }
+
+            if (billService.payTheBill(diningTableId, payMode)) {
+                System.out.println("结账成功~~");
                 System.out.println("==================== 结账完成 ====================");
             } else {
-                System.out.println("==================== 取消结账 ====================");
+                System.out.println("结账失败~~");
             }
             return;
         }
